@@ -154,6 +154,7 @@ public class Frmclientes extends javax.swing.JFrame {
         new Utilitarios().LimpaTela(painel_dados);
     }
 
+    //salvar
     public void salvar() {
 
         Clientes obj = new Clientes();
@@ -343,6 +344,11 @@ public class Frmclientes extends javax.swing.JFrame {
 
         btnbusca.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btnbusca.setText("Pesquisar");
+        btnbusca.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnbuscaMouseClicked(evt);
+            }
+        });
         btnbusca.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnbuscaActionPerformed(evt);
@@ -916,6 +922,10 @@ public class Frmclientes extends javax.swing.JFrame {
             txtcpf.setText(obj.getCpf());
         }
     }//GEN-LAST:event_txtcpfKeyPressed
+
+    private void btnbuscaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnbuscaMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnbuscaMouseClicked
 
     /**
      * @param args the command line arguments
