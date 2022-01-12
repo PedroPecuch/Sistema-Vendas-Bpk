@@ -199,7 +199,6 @@ public class FrmAlteraSenha extends javax.swing.JFrame {
     }else{
         JOptionPane.showMessageDialog(null, "Verifique se foram preenchidos os campos.");    
         }
-        
     }//GEN-LAST:event_BtnEnviarsenha1ActionPerformed
 
     /**
