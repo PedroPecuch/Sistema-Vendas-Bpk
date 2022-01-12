@@ -144,5 +144,9 @@ public class VendasDAO {
         }
 
     }
+    
+    public void retornaVendaItemMensal(int id, String mes) {
+        
+    }
 
 }

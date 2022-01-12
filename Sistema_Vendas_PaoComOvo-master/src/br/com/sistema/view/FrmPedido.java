@@ -5,6 +5,7 @@ import br.com.sistema.dao.ProdutosDAO;
 import br.com.sistema.model.Produtos;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import java.awt.Desktop;
@@ -12,6 +13,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -65,6 +67,11 @@ public class FrmPedido extends javax.swing.JFrame {
         carrinho.getColumn(1).setPreferredWidth(500);
         carrinho.getColumn(2).setPreferredWidth(20);
         
+        TableColumnModel tbHistorico = this.tbHistorico.getColumnModel();
+        
+        tbHistorico.getColumn(0).setPreferredWidth(50);
+        tbHistorico.getColumn(1).setPreferredWidth(20);
+        
     }
 
     @SuppressWarnings("unchecked")
@@ -84,6 +91,8 @@ public class FrmPedido extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         tbCarrinhoPedido = new javax.swing.JTable();
         btnGerarPedido = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tbHistorico = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -128,9 +137,16 @@ public class FrmPedido extends javax.swing.JFrame {
             Class[] types = new Class [] {
                 java.lang.Integer.class, java.lang.String.class, java.lang.Float.class, java.lang.Integer.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
         tbProdutosPedido.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -202,6 +218,31 @@ public class FrmPedido extends javax.swing.JFrame {
             }
         });
 
+        tbHistorico.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Mês", "Qtd. Vendas"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.Integer.class
+            };
+            boolean[] canEdit = new boolean [] {
+                true, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane3.setViewportView(tbHistorico);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -210,7 +251,6 @@ public class FrmPedido extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -229,7 +269,11 @@ public class FrmPedido extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnGerarPedido)))
+                        .addComponent(btnGerarPedido))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jScrollPane1)
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -245,8 +289,10 @@ public class FrmPedido extends javax.swing.JFrame {
                         .addComponent(txtpesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(btnpesquisar)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAddItem)
                     .addComponent(jLabel2)
@@ -255,7 +301,7 @@ public class FrmPedido extends javax.swing.JFrame {
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnGerarPedido)
-                .addContainerGap(16, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -263,8 +309,8 @@ public class FrmPedido extends javax.swing.JFrame {
 
         
     private void tbProdutosPedidoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbProdutosPedidoMouseClicked
-        
-        
+        int id = Integer.parseInt(tbHistorico.getValueAt(tbHistorico.getSelectedRow(), 0).toString());
+        LocalDate data = LocalDate.now();
     }//GEN-LAST:event_tbProdutosPedidoMouseClicked
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
@@ -323,20 +369,21 @@ public class FrmPedido extends javax.swing.JFrame {
 
     private void btnAddItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddItemActionPerformed
         // Adiciona um item ao carrinho.
-        if(!txtQtd.getText().isEmpty()) {
+    if (!txtQtd.getText().isEmpty()) {
         int qtd = Integer.parseInt(txtQtd.getText());
         int codigo = Integer.parseInt(tbProdutosPedido.getValueAt(tbProdutosPedido.getSelectedRow(), 0).toString());
         String produto = tbProdutosPedido.getValueAt(tbProdutosPedido.getSelectedRow(), 1).toString();
         
         DefaultTableModel pedido = (DefaultTableModel) tbCarrinhoPedido.getModel();
-        
-        pedido.addRow(new Object[]{
-            codigo,
-            produto,
-            qtd
-        });
+       
+            pedido.addRow(new Object[]{
+                codigo,
+                produto,
+                qtd
+            });
+            
     } else {
-            JOptionPane.showMessageDialog(null, "Informe uma quantidade.");
+        JOptionPane.showMessageDialog(null, "Informe uma quantidade.");
     }
     }//GEN-LAST:event_btnAddItemActionPerformed
 
@@ -430,7 +477,9 @@ public class FrmPedido extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTable tbCarrinhoPedido;
+    private javax.swing.JTable tbHistorico;
     private javax.swing.JTable tbProdutosPedido;
     private javax.swing.JTextField txtQtd;
     private javax.swing.JTextField txtpesquisa;
