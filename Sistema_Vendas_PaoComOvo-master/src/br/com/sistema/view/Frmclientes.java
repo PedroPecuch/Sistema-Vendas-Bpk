@@ -110,6 +110,19 @@ public class Frmclientes extends javax.swing.JFrame {
 
         jButton3.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_E, KeyEvent.CTRL_DOWN_MASK), key);
         jButton3.getActionMap().put(key, editarAction);
+        
+        //botão excluir
+        Action excluirAction = new AbstractAction("excluir") {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                excluir();
+            }
+
+        };
+
+        jButton4.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_D, KeyEvent.CTRL_DOWN_MASK), key);
+        jButton4.getActionMap().put(key, excluirAction);
 
         this.getContentPane().setBackground(Color.WHITE);
 
@@ -211,6 +224,18 @@ public class Frmclientes extends javax.swing.JFrame {
 
         dao.alterarCliente(obj);
 
+        new Utilitarios().LimpaTela(painel_dados);
+    }
+    
+    //botão excluir
+    public void excluir(){
+        Clientes obj = new Clientes();
+
+        obj.setId(Integer.parseInt(txtcodigo.getText()));
+
+        ClientesDAO dao = new ClientesDAO();
+
+        dao.excluirCliente(obj);
         new Utilitarios().LimpaTela(painel_dados);
     }
 
@@ -857,14 +882,7 @@ public class Frmclientes extends javax.swing.JFrame {
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // botao excluir
 
-        Clientes obj = new Clientes();
-
-        obj.setId(Integer.parseInt(txtcodigo.getText()));
-
-        ClientesDAO dao = new ClientesDAO();
-
-        dao.excluirCliente(obj);
-        new Utilitarios().LimpaTela(painel_dados);
+        excluir();
 
     }//GEN-LAST:event_jButton4ActionPerformed
 
