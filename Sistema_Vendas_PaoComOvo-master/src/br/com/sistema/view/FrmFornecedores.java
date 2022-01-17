@@ -814,7 +814,7 @@ public class FrmFornecedores extends javax.swing.JFrame {
             if(bool == true){
                 salvar();
             }else{
-                JOptionPane.showMessageDialog(null, "1Verifique se foram preenchidos os campos.");    
+                JOptionPane.showMessageDialog(null, "Verifique se todos os campos foram preenchidos");    
             }
 
     }//GEN-LAST:event_btnsalvarActionPerformed
