@@ -603,23 +603,64 @@ public class FrmVendas extends javax.swing.JFrame {
         
         ProdutosDAO dao = new ProdutosDAO();
         
-        Produtos qtdEstoque = dao.verificaEstoque(idProduto);
+        Produtos objetoProd = dao.verificaEstoque(idProduto);
+        int qtdEstoque = objetoProd.getQtd_estoque();
+        
         
         for (int i = 0 ; i < (tabelaItens.getRowCount()) ; i++){
-           
+
             Produtos produtos = new Produtos();
-            
-            
+
+
             produtos.setId(Integer.parseInt(tabelaItens.getValueAt(i,0).toString()));
             produtos.setQtd_estoque(Integer.parseInt(tabelaItens.getValueAt(i,2).toString()));
 
-           
+
             listaProdutos.add(produtos);
         }
         
-        listaProdutos.forEach(System.out::println);
+            
+        for (int i = 0 ; i <(listaProdutos.size()) ; i++){
+            Produtos obj = new Produtos();
+            obj = listaProdutos.get(i);
+            if (obj.getId() ==  idProduto)
+            totalItensId += obj.getQtd_estoque();   
+        } 
         
-        qtd = Integer.parseInt(txtqtd.getText().replaceAll(",", "."));
+        
+        if ((qntd <= qtdEstoque) && (qntd != 0) && ((totalItensId + qntd) <= qtdEstoque)){
+             
+            qtd = Integer.parseInt(txtqtd.getText().replaceAll(",", "."));
+        preco = Double.parseDouble(txtpreco.getText().replaceAll(",", "."));
+        
+        subtotal = qtd * preco;
+        
+        total += subtotal;
+        txttotal.setText(String.valueOf(total).format("%.2f", total));
+        
+        //Adicionar o produto no carrinho        
+        carrinho = (DefaultTableModel) tabelaItens.getModel();
+        
+         carrinho.addRow(new Object[]{
+             Integer.parseInt(txtcodigo.getText()),
+             txtdescricao.getText(),
+             Integer.parseInt(txtqtd.getText()),
+             Double.parseDouble(txtpreco.getText()),
+             subtotal                 
+            });
+            
+        } else{
+            txtqtd.setText(Integer.toString(qtdEstoque -(totalItensId) )); 
+            
+            JOptionPane.showMessageDialog(null, "Quantidade insuficiente em estoque! Há "+
+                    (qtdEstoque -(totalItensId) )+ " unidades em estoque!");
+        } 
+
+
+
+        //listaProdutos.forEach(System.out::println);
+        
+       /* qtd = Integer.parseInt(txtqtd.getText().replaceAll(",", "."));
         preco = Double.parseDouble(txtpreco.getText().replaceAll(",", "."));
         
         subtotal = qtd * preco;
@@ -636,7 +677,7 @@ public class FrmVendas extends javax.swing.JFrame {
              Integer.parseInt(txtqtd.getText()),
              Double.parseDouble(txtpreco.getText()),
              subtotal           
-            });
+            });*/
       
     }//GEN-LAST:event_btnaddActionPerformed
 

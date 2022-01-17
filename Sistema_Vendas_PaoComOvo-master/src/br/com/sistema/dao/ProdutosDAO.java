@@ -327,7 +327,7 @@ public class ProdutosDAO {
             Produtos obj = new Produtos();
 
             //2 passo - criar o sql , organizar e executar.
-            String sql = "select * from tb_produtos where id values = ?";
+            String sql = "select * from tb_produtos where id = ?";
 
             PreparedStatement stmt = con.prepareStatement(sql);
             stmt.setInt(1, id);
