@@ -88,6 +88,11 @@ public class FrmLogin extends javax.swing.JFrame {
         jLabel18.setText("Senha:");
 
         txtsenha.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        txtsenha.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtsenhaActionPerformed(evt);
+            }
+        });
 
         btnentrar.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         btnentrar.setText("ENTRAR");
@@ -214,6 +219,28 @@ public class FrmLogin extends javax.swing.JFrame {
         
         tela.setVisible(true);
     }//GEN-LAST:event_lblEsqueciMouseClicked
+
+    private void txtsenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtsenhaActionPerformed
+        // TODO add your handling code here:
+        try {
+            String email, senha;
+           
+            email = txtemail.getText();
+            //senha = txtsenha.getText();
+            senha = new String(txtsenha.getPassword());
+            
+            FuncionariosDAO dao = new FuncionariosDAO();
+            
+            
+            dao.efetuaLogin(email, senha);
+            
+            
+            this.dispose();
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "erro");
+        }
+    }//GEN-LAST:event_txtsenhaActionPerformed
 
     /**
      * @param args the command line arguments
