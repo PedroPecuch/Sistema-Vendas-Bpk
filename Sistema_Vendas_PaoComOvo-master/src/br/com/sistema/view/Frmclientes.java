@@ -865,7 +865,14 @@ public class Frmclientes extends javax.swing.JFrame {
 
     private void btnsalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnsalvarActionPerformed
         // botão salvar
-        salvar();
+        Utilitarios util = new Utilitarios();
+        boolean bool = util.isAllFilled(painel_dados);
+            
+        if(bool == true){
+            salvar();
+        }else{
+            JOptionPane.showMessageDialog(null, "Verifique se todos os campos foram preenchidos");    
+        }
     }//GEN-LAST:event_btnsalvarActionPerformed
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
@@ -876,7 +883,15 @@ public class Frmclientes extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // botao editar
-        editar();
+        Utilitarios util = new Utilitarios();
+        boolean bool = util.isAllFilled(painel_dados);
+            
+        if(bool == true){
+            editar();
+        }else{
+            JOptionPane.showMessageDialog(null, "Verifique se todos os campos foram preenchidos");    
+        }
+        
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
