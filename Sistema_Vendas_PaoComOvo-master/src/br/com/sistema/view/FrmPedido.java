@@ -8,6 +8,7 @@ import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.mysql.cj.xdevapi.PreparableStatement;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -311,10 +312,13 @@ public class FrmPedido extends javax.swing.JFrame {
     private void tbProdutosPedidoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbProdutosPedidoMouseClicked
         int id = Integer.parseInt(tbHistorico.getValueAt(tbHistorico.getSelectedRow(), 0).toString());
         LocalDate data = LocalDate.now();
+        
+        
+        
     }//GEN-LAST:event_tbProdutosPedidoMouseClicked
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
-        // TODO add your handling code here:
+
         listar();
         setarLarguraColunas();
     }//GEN-LAST:event_formWindowActivated

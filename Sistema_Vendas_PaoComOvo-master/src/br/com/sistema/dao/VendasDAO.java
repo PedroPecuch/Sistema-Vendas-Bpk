@@ -15,6 +15,8 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -145,8 +147,20 @@ public class VendasDAO {
 
     }
     
-    public void retornaVendaItemMensal(int id, String mes) {
-        
+    public void retornaVendaItemMensal(int id, LocalDate data_atual) {
+        try {
+            LocalDate dataMenosUm = data_atual.minusMonths(1);
+            LocalDate dataMenosDois = data_atual.minusMonths(2);
+            
+            String sql = "select sum(qtd), date_format(tb_vendas.data_venda, '%m-%Y') "
+                    + "as mes from tb_itensvendas join tb_vendas on tb_itensvendas.venda_id "
+                    + "= tb_vendas.id where tb_itensvendas.produto_id = ? "
+                    + "and date_format(tb_vendas.data_venda, '%m-%Y') = '?';";
+            
+            PreparedStatement stmt = con.prepareStatement(sql);
+        } catch (SQLException erro) {
+            JOptionPane.showMessageDialog(null, "Erro: " +erro);
+        }
     }
 
 }
