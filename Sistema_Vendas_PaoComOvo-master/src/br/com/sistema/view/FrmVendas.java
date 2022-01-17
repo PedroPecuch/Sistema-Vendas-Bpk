@@ -16,9 +16,11 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import static java.lang.System.exit;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 
 import java.util.List;
 import java.util.Scanner;
@@ -40,6 +42,7 @@ public class FrmVendas extends javax.swing.JFrame {
     
     DefaultTableModel carrinho;
     
+     List<Produtos> listaProdutos = new ArrayList();
 
     public FrmVendas() {
         initComponents();
@@ -244,6 +247,7 @@ public class FrmVendas extends javax.swing.JFrame {
             }
         });
 
+        txtdescricao.setEditable(false);
         txtdescricao.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtdescricao.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -257,6 +261,7 @@ public class FrmVendas extends javax.swing.JFrame {
         jLabel9.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel9.setText("Preço");
 
+        txtpreco.setEditable(false);
         txtpreco.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtpreco.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -518,6 +523,17 @@ public class FrmVendas extends javax.swing.JFrame {
                      + "e o total deve ser diferente de zero!");
        }else{
             if(valor > 0 ){
+                ProdutosDAO dao = new ProdutosDAO();
+                Produtos objs = new Produtos();
+                String codigo = txtcodigo.getText();
+                objs = dao.buscaPorCodigo(Integer.parseInt(codigo));
+                
+                String qntd = txtqtd.getText();
+                if(Integer.parseInt(qntd) > objs.getQtd_estoque()){
+                    JOptionPane.showMessageDialog(null, "Quantidade indisponível no estoque!\n\n"
+                            + "Quantidade disponível: "+objs.getQtd_estoque());
+                    return;
+                }
                 
                 FrmPagamentos telap = new FrmPagamentos();
                 telap.txttotal.setText(String.valueOf(total));
@@ -529,6 +545,7 @@ public class FrmVendas extends javax.swing.JFrame {
                 this.dispose();
             } else {
             JOptionPane.showMessageDialog(null, "Favor adicionar itens!");
+           
             } 
        }
        
@@ -569,14 +586,39 @@ public class FrmVendas extends javax.swing.JFrame {
 
     private void txtprecoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtprecoActionPerformed
         // TODO add your handling code here:
+        
     }//GEN-LAST:event_txtprecoActionPerformed
 
     private void txtqtdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtqtdActionPerformed
         // TODO add your handling code here:
+        
     }//GEN-LAST:event_txtqtdActionPerformed
 
     private void btnaddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnaddActionPerformed
         // botao add item
+        
+        int qntd = Integer.parseInt(txtqtd.getText());
+        int idProduto = Integer.parseInt(txtcodigo.getText());
+        int totalItensId = 0;
+        
+        ProdutosDAO dao = new ProdutosDAO();
+        
+        Produtos qtdEstoque = dao.verificaEstoque(idProduto);
+        
+        for (int i = 0 ; i < (tabelaItens.getRowCount()) ; i++){
+           
+            Produtos produtos = new Produtos();
+            
+            
+            produtos.setId(Integer.parseInt(tabelaItens.getValueAt(i,0).toString()));
+            produtos.setQtd_estoque(Integer.parseInt(tabelaItens.getValueAt(i,2).toString()));
+
+           
+            listaProdutos.add(produtos);
+        }
+        
+        listaProdutos.forEach(System.out::println);
+        
         qtd = Integer.parseInt(txtqtd.getText().replaceAll(",", "."));
         preco = Double.parseDouble(txtpreco.getText().replaceAll(",", "."));
         
@@ -614,8 +656,13 @@ public class FrmVendas extends javax.swing.JFrame {
 
         objs = dao.buscaPorCodigo(Integer.parseInt(txtcodigo.getText()));
 
-        txtdescricao.setText(objs.getDescricao());
-        txtpreco.setText(String.valueOf(objs.getPreco()));
+        if(objs != null){
+            txtdescricao.setText(objs.getDescricao());
+            txtpreco.setText(String.valueOf(objs.getPreco()));
+        }else{
+           JOptionPane.showMessageDialog(null,"Não foi encontrado o produto!");
+        }
+        
     }//GEN-LAST:event_txtbuscaprodutoActionPerformed
 
     private void txttotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txttotalActionPerformed

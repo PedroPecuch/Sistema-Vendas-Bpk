@@ -25,7 +25,6 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 
@@ -69,16 +68,8 @@ public class Utilitarios {
                     break;
                 }
             }
-            
             if (component instanceof JPasswordField &&  component.getName() == null){
                 if (((JPasswordField) component).getPassword().length == 0){
-                    bool = false;
-                    break;
-                }
-            }
-            
-            if (component instanceof JFormattedTextField &&  component.getName() == null){
-                if (((JFormattedTextField) component).getText().isEmpty()){
                     bool = false;
                     break;
                 }
