@@ -154,7 +154,7 @@ public class VendasDAO {
         int totalMes = 0;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-yyyy");
         
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i <= lista.size(); i++) {
             try {
                 String sql = "select sum(qtd) as total"
                         + " from tb_itensvendas join tb_vendas on tb_itensvendas.venda_id "

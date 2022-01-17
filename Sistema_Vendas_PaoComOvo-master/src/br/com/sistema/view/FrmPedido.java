@@ -374,7 +374,7 @@ public class FrmPedido extends javax.swing.JFrame {
         DefaultTableModel historico = (DefaultTableModel) tbHistorico.getModel();
         historico.setNumRows(0);
         
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i <= lista.size(); i++) {
             historico.addRow(new Object[]{
               data.minusMonths(i).getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault()),
               lista.get(i)
