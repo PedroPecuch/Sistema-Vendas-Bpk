@@ -808,7 +808,15 @@ public class FrmFornecedores extends javax.swing.JFrame {
 
     private void btnsalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnsalvarActionPerformed
         // boto salvar
-        salvar();
+        Utilitarios util = new Utilitarios();
+            boolean bool = util.isAllFilled(painel_dados);
+            
+            if(bool == true){
+                salvar();
+            }else{
+                JOptionPane.showMessageDialog(null, "1Verifique se foram preenchidos os campos.");    
+            }
+
     }//GEN-LAST:event_btnsalvarActionPerformed
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
