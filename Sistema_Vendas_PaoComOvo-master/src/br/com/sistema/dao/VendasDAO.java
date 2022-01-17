@@ -147,31 +147,33 @@ public class VendasDAO {
 
     }
     
-    public double retornaVendaItemMensal(int id, LocalDate data) {
-        double totalMes = 0;
-        try {
-            String sql = "select sum(qtd)"
-                    + " from tb_itensvendas join tb_vendas on tb_itensvendas.venda_id "
-                    + "= tb_vendas.id where tb_itensvendas.produto_id = ? "
-                    + "and date_format(tb_vendas.data_venda, '%m-%Y') = ?;";
-            
-            PreparedStatement stmt = con.prepareStatement(sql);
-            
-            stmt.setInt(1, id);
-            stmt.setString(2, data.toString());
-            
-            ResultSet resultado = stmt.executeQuery();
-            
-            if (resultado.next()) {
-                totalMes = resultado.getDouble("sum(qtd)");
+    public List<Integer> retornaVendaItemMensal(int id, LocalDate data) {
+        List<Integer> lista = new ArrayList<>();
+        int totalMes = 0;
+        for (int i = 0; i < 3; i++) {
+            try {
+                String sql = "select sum(qtd)"
+                        + " from tb_itensvendas join tb_vendas on tb_itensvendas.venda_id "
+                        + "= tb_vendas.id where tb_itensvendas.produto_id = ? "
+                        + "and date_format(tb_vendas.data_venda, '%m-%Y') = ?;";
+
+                PreparedStatement stmt = con.prepareStatement(sql);
+
+                stmt.setInt(1, id);
+                stmt.setString(2, data.minusMonths(i).toString());
+
+                ResultSet resultado = stmt.executeQuery();
+
+                if (resultado.next()) {
+                    lista.add(totalMes);
+                }
+
+            } catch (SQLException erro) {
+                JOptionPane.showMessageDialog(null, "Erro: " +erro);
+                throw new RuntimeException(erro);
             }
-            
-            return totalMes;
-            
-        } catch (SQLException erro) {
-            JOptionPane.showMessageDialog(null, "Erro: " +erro);
         }
-        
+        return lista;
     }
 
 }

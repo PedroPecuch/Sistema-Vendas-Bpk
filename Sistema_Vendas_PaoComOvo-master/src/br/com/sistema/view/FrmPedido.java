@@ -2,6 +2,7 @@
 package br.com.sistema.view;
 
 import br.com.sistema.dao.ProdutosDAO;
+import br.com.sistema.dao.VendasDAO;
 import br.com.sistema.model.Produtos;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Paragraph;
@@ -14,7 +15,10 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
 import java.util.List;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -230,7 +234,7 @@ public class FrmPedido extends javax.swing.JFrame {
                 java.lang.String.class, java.lang.Integer.class
             };
             boolean[] canEdit = new boolean [] {
-                true, false
+                false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -309,8 +313,22 @@ public class FrmPedido extends javax.swing.JFrame {
 
         
     private void tbProdutosPedidoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbProdutosPedidoMouseClicked
-        int id = Integer.parseInt(tbHistorico.getValueAt(tbHistorico.getSelectedRow(), 0).toString());
+        int id = Integer.parseInt(tbProdutosPedido.getValueAt(tbProdutosPedido.getSelectedRow(), 0).toString());
         LocalDate data = LocalDate.now();
+        
+        VendasDAO dao = new VendasDAO();
+        
+        List<Integer> lista = dao.retornaVendaItemMensal(id, data);
+        
+        DefaultTableModel historico = (DefaultTableModel) tbHistorico.getModel();
+        historico.setNumRows(0);
+        
+        for (int i = 0; i < 3; i++) {
+            historico.addRow(new Object[]{
+              data.minusMonths(i).getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault()),
+              lista.get(i)
+            });
+        }
     }//GEN-LAST:event_tbProdutosPedidoMouseClicked
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
