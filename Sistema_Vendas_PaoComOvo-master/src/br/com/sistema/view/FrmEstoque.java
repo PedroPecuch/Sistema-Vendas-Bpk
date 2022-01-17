@@ -335,11 +335,7 @@ public class FrmEstoque extends javax.swing.JFrame {
     }//GEN-LAST:event_tabelaProdutosMouseClicked
 
     private void btnaddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnaddActionPerformed
-        
-        Utilitarios util = new Utilitarios();
-        boolean bool = util.isAllFilled(jPanel3);
-            
-        if(bool == true){
+       
             try {
                 int qtd_estoque, qtd;
 
@@ -359,10 +355,6 @@ public class FrmEstoque extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Selecione o produto ou informe a nova qtd." + e);
 
             }
-            
-        }else{
-            JOptionPane.showMessageDialog(null, "Verifique se todos os campos foram preenchidos");    
-        }
 
     }//GEN-LAST:event_btnaddActionPerformed
 
