@@ -39,6 +39,52 @@ public class FrmPedido extends javax.swing.JFrame {
         initComponents();
     }
     
+    
+    
+    
+    
+    //pesquisar
+    public void pesquisar(){
+        String nome = "%" + txtpesquisa.getText() + "%";
+
+        ProdutosDAO dao = new ProdutosDAO();
+        List<Produtos> lista = dao.listarProdutosPorNome(nome);
+
+        DefaultTableModel dados = (DefaultTableModel) tbProdutosPedido.getModel();
+        dados.setNumRows(0);
+
+        for (Produtos c : lista) {
+            dados.addRow(new Object[]{
+                c.getId(),
+                c.getDescricao(),
+                c.getPreco(),
+                c.getQtd_estoque(),
+                c.getFornecedor().getNome()
+            });
+
+        }
+    }
+    
+    //adicionar item
+    public void adicionar(){
+        if (!txtQtd.getText().isEmpty()) {
+        int qtd = Integer.parseInt(txtQtd.getText());
+        int codigo = Integer.parseInt(tbProdutosPedido.getValueAt(tbProdutosPedido.getSelectedRow(), 0).toString());
+        String produto = tbProdutosPedido.getValueAt(tbProdutosPedido.getSelectedRow(), 1).toString();
+        
+        DefaultTableModel pedido = (DefaultTableModel) tbCarrinhoPedido.getModel();
+       
+            pedido.addRow(new Object[]{
+                codigo,
+                produto,
+                qtd
+            });
+            
+        } else {
+            JOptionPane.showMessageDialog(null, "Informe uma quantidade.");
+        }
+    }
+    
     public void listar() {
 
         ProdutosDAO dao = new ProdutosDAO();
@@ -172,6 +218,11 @@ public class FrmPedido extends javax.swing.JFrame {
         jLabel16.setText("Nome:");
 
         txtpesquisa.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtpesquisa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtpesquisaActionPerformed(evt);
+            }
+        });
         txtpesquisa.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txtpesquisaKeyPressed(evt);
@@ -360,49 +411,17 @@ public class FrmPedido extends javax.swing.JFrame {
 
     private void btnpesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnpesquisarActionPerformed
         // Botao pesquisar
-        String nome = "%" + txtpesquisa.getText() + "%";
-
-        ProdutosDAO dao = new ProdutosDAO();
-        List<Produtos> lista = dao.listarProdutosPorNome(nome);
-
-        DefaultTableModel dados = (DefaultTableModel) tbProdutosPedido.getModel();
-        dados.setNumRows(0);
-
-        for (Produtos c : lista) {
-            dados.addRow(new Object[]{
-                c.getId(),
-                c.getDescricao(),
-                c.getPreco(),
-                c.getQtd_estoque(),
-                c.getFornecedor().getNome()
-            });
-
-        }
-
+        pesquisar();
     }//GEN-LAST:event_btnpesquisarActionPerformed
 
     private void txtQtdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtQtdActionPerformed
         // TODO add your handling code here:
+        adicionar();
     }//GEN-LAST:event_txtQtdActionPerformed
 
     private void btnAddItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddItemActionPerformed
         // Adiciona um item ao carrinho.
-    if (!txtQtd.getText().isEmpty()) {
-        int qtd = Integer.parseInt(txtQtd.getText());
-        int codigo = Integer.parseInt(tbProdutosPedido.getValueAt(tbProdutosPedido.getSelectedRow(), 0).toString());
-        String produto = tbProdutosPedido.getValueAt(tbProdutosPedido.getSelectedRow(), 1).toString();
-        
-        DefaultTableModel pedido = (DefaultTableModel) tbCarrinhoPedido.getModel();
-       
-            pedido.addRow(new Object[]{
-                codigo,
-                produto,
-                qtd
-            });
-            
-    } else {
-        JOptionPane.showMessageDialog(null, "Informe uma quantidade.");
-    }
+        adicionar();
     }//GEN-LAST:event_btnAddItemActionPerformed
 
     private void btnGerarPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGerarPedidoActionPerformed
@@ -449,6 +468,11 @@ public class FrmPedido extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Erro: " +ex);
         }
     }//GEN-LAST:event_btnGerarPedidoActionPerformed
+
+    private void txtpesquisaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtpesquisaActionPerformed
+        // TODO add your handling code here:
+        pesquisar();
+    }//GEN-LAST:event_txtpesquisaActionPerformed
 
     /**
      * @param args the command line arguments

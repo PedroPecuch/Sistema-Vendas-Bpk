@@ -182,6 +182,36 @@ public class FrmProdutos extends javax.swing.JFrame {
         new Utilitarios().LimpaTela(painel_dados);
     }
     
+    //pesquisar 
+    public void pesquisar(){
+        String nome = txtdescricao.getText();
+        Produtos obj = new Produtos();
+        ProdutosDAO dao = new ProdutosDAO();       
+
+        obj = dao.consultaPorNome(nome);
+        
+        cbfornecedor.removeAllItems();
+
+        if (obj.getDescricao() != null) {
+
+            //Exibi os dados do obj nos campos de texto
+            txtcodigo.setText(String.valueOf(obj.getId()));
+            txtdescricao.setText(obj.getDescricao());
+            txtpreco.setText(String.valueOf(obj.getPreco()));
+            txtqtdestoque.setText(String.valueOf(obj.getQtd_estoque()));
+         
+            Fornecedores f = new Fornecedores();
+            FornecedoresDAO fdao = new FornecedoresDAO();
+
+            f = fdao.consultaPorNome(obj.getFornecedor().getNome());
+
+            cbfornecedor.getModel().setSelectedItem(f);
+            
+        } else {
+            JOptionPane.showMessageDialog(null, "Produto não encontrado!");
+        }
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -272,6 +302,7 @@ public class FrmProdutos extends javax.swing.JFrame {
 
         txtcodigo.setEditable(false);
         txtcodigo.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtcodigo.setName("codigo"); // NOI18N
 
         txtdescricao.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtdescricao.addActionListener(new java.awt.event.ActionListener() {
@@ -281,6 +312,11 @@ public class FrmProdutos extends javax.swing.JFrame {
         });
 
         txtpreco.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtpreco.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtprecoActionPerformed(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel2.setText("Código:");
@@ -531,34 +567,7 @@ public class FrmProdutos extends javax.swing.JFrame {
 
     private void btnbuscaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnbuscaActionPerformed
         // botao buscar cliente por nome     
-
-        String nome = txtdescricao.getText();
-        Produtos obj = new Produtos();
-        ProdutosDAO dao = new ProdutosDAO();       
-
-        obj = dao.consultaPorNome(nome);
-        
-        cbfornecedor.removeAllItems();
-
-        if (obj.getDescricao() != null) {
-
-            //Exibi os dados do obj nos campos de texto
-            txtcodigo.setText(String.valueOf(obj.getId()));
-            txtdescricao.setText(obj.getDescricao());
-            txtpreco.setText(String.valueOf(obj.getPreco()));
-            txtqtdestoque.setText(String.valueOf(obj.getQtd_estoque()));
-         
-            Fornecedores f = new Fornecedores();
-            FornecedoresDAO fdao = new FornecedoresDAO();
-
-            f = fdao.consultaPorNome(obj.getFornecedor().getNome());
-
-            cbfornecedor.getModel().setSelectedItem(f);
-            
-        } else {
-            JOptionPane.showMessageDialog(null, "Produto não encontrado!");
-        }
-
+        pesquisar();
     }//GEN-LAST:event_btnbuscaActionPerformed
 
     private void btnpesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnpesquisarActionPerformed
@@ -587,11 +596,19 @@ public class FrmProdutos extends javax.swing.JFrame {
 
     private void txtdescricaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtdescricaoActionPerformed
         // TODO add your handling code here:
+        pesquisar();
     }//GEN-LAST:event_txtdescricaoActionPerformed
 
     private void btnsalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnsalvarActionPerformed
         // boto salvar
-        salvar();
+        Utilitarios util = new Utilitarios();
+        boolean bool = util.isAllFilled(painel_dados);
+            
+        if(bool == true){
+            salvar();
+        }else{
+            JOptionPane.showMessageDialog(null, "Verifique se todos os campos foram preenchidos");    
+        }
     }//GEN-LAST:event_btnsalvarActionPerformed
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
@@ -622,7 +639,14 @@ public class FrmProdutos extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // botao editar
-        editar();
+         Utilitarios util = new Utilitarios();
+        boolean bool = util.isAllFilled(painel_dados);
+            
+        if(bool == true){
+            editar();
+        }else{
+            JOptionPane.showMessageDialog(null, "Verifique se todos os campos foram preenchidos");    
+        }
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -681,6 +705,10 @@ public class FrmProdutos extends javax.swing.JFrame {
         }
 
      }//GEN-LAST:event_cbfornecedorMouseClicked
+
+    private void txtprecoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtprecoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtprecoActionPerformed
 
     /**
      * @param args the command line arguments

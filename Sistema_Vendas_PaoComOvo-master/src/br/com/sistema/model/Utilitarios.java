@@ -85,6 +85,13 @@ public class Utilitarios {
                 }
             }
         
+            if (component instanceof JComboBox &&  component.getName() == null){
+                if (((JComboBox) component).getSelectedItem() == null){
+                    bool = false;
+                    break;
+                }
+            }
+        
         }
         return bool;
     }
