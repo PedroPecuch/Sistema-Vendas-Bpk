@@ -180,6 +180,24 @@ public class FrmTotalVenda extends javax.swing.JFrame {
 
     private void txtdataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtdataActionPerformed
         // TODO add your handling code here:
+        try {
+            
+            //Receber a data
+            DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            LocalDate data_venda = LocalDate.parse(txtdata.getText(), formato);
+            
+            double total_venda;
+            
+            VendasDAO dao = new VendasDAO();
+            total_venda = dao.retornaTotalVendaPorData(data_venda);
+            
+            txtotalvenda.setText(String.valueOf(total_venda));
+            
+        } catch (Exception e) {
+            
+            JOptionPane.showMessageDialog(null, "Informe uma data corretamente." + e);
+                   
+        }
     }//GEN-LAST:event_txtdataActionPerformed
 
     /**
