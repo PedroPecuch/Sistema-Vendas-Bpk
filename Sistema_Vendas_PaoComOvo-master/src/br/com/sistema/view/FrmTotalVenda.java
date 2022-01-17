@@ -75,6 +75,11 @@ public class FrmTotalVenda extends javax.swing.JFrame {
             ex.printStackTrace();
         }
         txtdata.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtdata.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtdataActionPerformed(evt);
+            }
+        });
         txtdata.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txtdataKeyPressed(evt);
@@ -172,6 +177,10 @@ public class FrmTotalVenda extends javax.swing.JFrame {
     private void txtotalvendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtotalvendaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtotalvendaActionPerformed
+
+    private void txtdataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtdataActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtdataActionPerformed
 
     /**
      * @param args the command line arguments

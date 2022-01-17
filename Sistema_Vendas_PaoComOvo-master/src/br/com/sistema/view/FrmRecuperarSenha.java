@@ -72,6 +72,12 @@ public class FrmRecuperarSenha extends javax.swing.JFrame {
             }
         });
 
+        txtemail.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtemailActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -162,6 +168,49 @@ public class FrmRecuperarSenha extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Verifique se foi preenchido o campo.");
         }
     }//GEN-LAST:event_BtnEnviarsenhaActionPerformed
+
+    private void txtemailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtemailActionPerformed
+        // TODO add your handling code here:
+        Utilitarios util = new Utilitarios();
+            boolean bool = util.isAllFilled(jPanel2);
+            
+            if(bool == true){
+                try {
+              
+                String email, senha;
+
+                email = txtemail.getText();
+
+                Random gerador = new Random();
+                senha = Integer.toString(gerador.nextInt());
+
+                FuncionariosDAO dao = new FuncionariosDAO();
+                Funcionarios obj = new Funcionarios();
+
+                obj=dao.verificaEmail(email);
+
+                String emailbd = obj.getEmail();
+
+                if(!(emailbd.equals(email))){
+                    JOptionPane.showMessageDialog(null, "Por favor verifique o email digitado.");
+                } else {
+                dao.recuperaSenha(email, senha);
+
+                FrmLogin telalogin = new FrmLogin();
+
+                this.dispose();
+
+                telalogin.setVisible(true);
+                }
+
+
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "erro");
+            }
+        }else{
+            JOptionPane.showMessageDialog(null, "Verifique se foi preenchido o campo.");
+        }
+    }//GEN-LAST:event_txtemailActionPerformed
 
     /**
      * @param args the command line arguments
