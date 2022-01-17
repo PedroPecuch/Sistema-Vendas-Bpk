@@ -15,6 +15,8 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -145,8 +147,33 @@ public class VendasDAO {
 
     }
     
-    public void retornaVendaItemMensal(int id, String mes) {
-        
+    public List<Integer> retornaVendaItemMensal(int id, LocalDate data) {
+        List<Integer> lista = new ArrayList<>();
+        int totalMes = 0;
+        for (int i = 0; i < 3; i++) {
+            try {
+                String sql = "select sum(qtd)"
+                        + " from tb_itensvendas join tb_vendas on tb_itensvendas.venda_id "
+                        + "= tb_vendas.id where tb_itensvendas.produto_id = ? "
+                        + "and date_format(tb_vendas.data_venda, '%m-%Y') = ?;";
+
+                PreparedStatement stmt = con.prepareStatement(sql);
+
+                stmt.setInt(1, id);
+                stmt.setString(2, data.minusMonths(i).toString());
+
+                ResultSet resultado = stmt.executeQuery();
+
+                if (resultado.next()) {
+                    lista.add(totalMes);
+                }
+
+            } catch (SQLException erro) {
+                JOptionPane.showMessageDialog(null, "Erro: " +erro);
+                throw new RuntimeException(erro);
+            }
+        }
+        return lista;
     }
 
 }
