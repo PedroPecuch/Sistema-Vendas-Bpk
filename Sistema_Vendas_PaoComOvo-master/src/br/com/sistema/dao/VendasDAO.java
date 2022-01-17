@@ -152,22 +152,19 @@ public class VendasDAO {
     public List<Integer> retornaVendaItemMensal(int id, LocalDate data) {
         List<Integer> lista = new ArrayList<>();
         int totalMes = 0;
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-yy");
-        data.format(formatter);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-yyyy");
+        
         for (int i = 0; i < 3; i++) {
             try {
                 String sql = "select sum(qtd) as total"
                         + " from tb_itensvendas join tb_vendas on tb_itensvendas.venda_id "
                         + "= tb_vendas.id where tb_itensvendas.produto_id = ? "
-                        + "date_format(tb_vendas.data_venda, '%m-%Y') = ?;";
+                        + "and date_format(tb_vendas.data_venda, '%m-%Y') = ?;";
 
                 PreparedStatement stmt = con.prepareStatement(sql);
 
                 stmt.setInt(1, id);
-                stmt.setString(2, data.minusMonths(i).toString());
-                
-                System.out.println("Data: " +data + "\n");
-                System.out.println("Menos um mês: " +data.minusMonths(1));
+                stmt.setString(2, data.minusMonths(i).format(formatter));
 
                 ResultSet resultado = stmt.executeQuery();
 
