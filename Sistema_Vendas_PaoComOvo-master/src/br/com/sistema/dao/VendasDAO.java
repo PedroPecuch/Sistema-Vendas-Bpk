@@ -147,20 +147,31 @@ public class VendasDAO {
 
     }
     
-    public void retornaVendaItemMensal(int id, LocalDate data_atual) {
+    public double retornaVendaItemMensal(int id, LocalDate data) {
+        double totalMes = 0;
         try {
-            LocalDate dataMenosUm = data_atual.minusMonths(1);
-            LocalDate dataMenosDois = data_atual.minusMonths(2);
-            
-            String sql = "select sum(qtd), date_format(tb_vendas.data_venda, '%m-%Y') "
-                    + "as mes from tb_itensvendas join tb_vendas on tb_itensvendas.venda_id "
+            String sql = "select sum(qtd)"
+                    + " from tb_itensvendas join tb_vendas on tb_itensvendas.venda_id "
                     + "= tb_vendas.id where tb_itensvendas.produto_id = ? "
-                    + "and date_format(tb_vendas.data_venda, '%m-%Y') = '?';";
+                    + "and date_format(tb_vendas.data_venda, '%m-%Y') = ?;";
             
             PreparedStatement stmt = con.prepareStatement(sql);
+            
+            stmt.setInt(1, id);
+            stmt.setString(2, data.toString());
+            
+            ResultSet resultado = stmt.executeQuery();
+            
+            if (resultado.next()) {
+                totalMes = resultado.getDouble("sum(qtd)");
+            }
+            
+            return totalMes;
+            
         } catch (SQLException erro) {
             JOptionPane.showMessageDialog(null, "Erro: " +erro);
         }
+        
     }
 
 }
