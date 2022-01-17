@@ -9,10 +9,12 @@ import br.com.sistema.jdbc.ConnectionFactory;
 import br.com.sistema.model.Clientes;
 import br.com.sistema.model.Vendas;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -150,22 +152,27 @@ public class VendasDAO {
     public List<Integer> retornaVendaItemMensal(int id, LocalDate data) {
         List<Integer> lista = new ArrayList<>();
         int totalMes = 0;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-yy");
+        data.format(formatter);
         for (int i = 0; i < 3; i++) {
             try {
-                String sql = "select sum(qtd)"
+                String sql = "select sum(qtd) as total"
                         + " from tb_itensvendas join tb_vendas on tb_itensvendas.venda_id "
                         + "= tb_vendas.id where tb_itensvendas.produto_id = ? "
-                        + "and date_format(tb_vendas.data_venda, '%m-%Y') = ?;";
+                        + "date_format(tb_vendas.data_venda, '%m-%Y') = ?;";
 
                 PreparedStatement stmt = con.prepareStatement(sql);
 
                 stmt.setInt(1, id);
                 stmt.setString(2, data.minusMonths(i).toString());
+                
+                System.out.println("Data: " +data + "\n");
+                System.out.println("Menos um mês: " +data.minusMonths(1));
 
                 ResultSet resultado = stmt.executeQuery();
 
                 if (resultado.next()) {
-                    lista.add(totalMes);
+                    lista.add(resultado.getInt("total"));
                 }
 
             } catch (SQLException erro) {
