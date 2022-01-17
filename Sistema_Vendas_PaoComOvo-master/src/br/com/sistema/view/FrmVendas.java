@@ -160,6 +160,7 @@ public class FrmVendas extends javax.swing.JFrame {
 
         txtdataatual.setEditable(false);
         txtdataatual.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtdataatual.setName("txtdata"); // NOI18N
         txtdataatual.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtdataatualActionPerformed(evt);
@@ -183,6 +184,11 @@ public class FrmVendas extends javax.swing.JFrame {
             ex.printStackTrace();
         }
         txtcpf.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtcpf.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtcpfActionPerformed(evt);
+            }
+        });
         txtcpf.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txtcpfKeyPressed(evt);
@@ -249,6 +255,7 @@ public class FrmVendas extends javax.swing.JFrame {
 
         txtdescricao.setEditable(false);
         txtdescricao.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtdescricao.setName("txtproduto"); // NOI18N
         txtdescricao.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtdescricaoActionPerformed(evt);
@@ -263,6 +270,7 @@ public class FrmVendas extends javax.swing.JFrame {
 
         txtpreco.setEditable(false);
         txtpreco.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtpreco.setName("txtpreco"); // NOI18N
         txtpreco.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtprecoActionPerformed(evt);
@@ -596,8 +604,11 @@ public class FrmVendas extends javax.swing.JFrame {
 
     private void btnaddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnaddActionPerformed
         // botao add item
-        
-        int qntd = Integer.parseInt(txtqtd.getText());
+        Utilitarios util = new Utilitarios();
+        boolean bool = util.isAllFilled(jPanel3);
+            
+        if(bool == true){
+            int qntd = Integer.parseInt(txtqtd.getText());
         int idProduto = Integer.parseInt(txtcodigo.getText());
         int totalItensId = 0;
         
@@ -678,6 +689,10 @@ public class FrmVendas extends javax.swing.JFrame {
              Double.parseDouble(txtpreco.getText()),
              subtotal           
             });*/
+        }else{
+            JOptionPane.showMessageDialog(null, "Verifique se todos os campos foram preenchidos");    
+        }
+       
       
     }//GEN-LAST:event_btnaddActionPerformed
 
@@ -780,6 +795,16 @@ public class FrmVendas extends javax.swing.JFrame {
             //txttotal.setText(null);
         }
     }//GEN-LAST:event_tabelaItensMouseClicked
+
+    private void txtcpfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtcpfActionPerformed
+        // TODO add your handling code here:
+        Clientes obj = new Clientes();
+        ClientesDAO dao = new ClientesDAO();
+
+        obj = dao.buscaporcpf(txtcpf.getText());
+
+        txtnome.setText(obj.getNome());
+    }//GEN-LAST:event_txtcpfActionPerformed
 
     /**
      * @param args the command line arguments
