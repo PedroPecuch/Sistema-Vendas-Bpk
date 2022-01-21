@@ -9,6 +9,8 @@ import br.com.sistema.view.Frmmenu;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JDesktopPane;
 import javax.swing.JPanel;
@@ -29,6 +31,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
+import javax.swing.JTable;
 
 
 /**
@@ -176,6 +179,32 @@ public void JavaEmail(String email, String senha) {
         e.printStackTrace();
     }
   }
+
+    public List<Object[]> OrganizaLista(JTable carrinho, Produtos produto) {
+       List<Object[]> lista = new ArrayList<>();
+       int positionQtd = 0;
+       
+       for(int i=0; i <= carrinho.getRowCount(); i++) {
+           Object[] obj = new Object[carrinho.getColumnCount()];
+           for(int j=0; j < carrinho.getColumnCount(); j++) {
+               obj[j] = carrinho.getValueAt(i, j);
+               if("Qtd".equals(carrinho.getColumnName(j))) {
+                   positionQtd = j;
+               }
+           }
+           lista.add(obj);
+       }
+       
+       for(int i=0; i <= lista.size(); i++) {
+           if(Integer.parseInt(lista.get(i)[0].toString()) == produto.getId()) {
+              Object[] obj = lista.get(i);
+              obj[positionQtd] = produto.getQtd_estoque();
+              lista.set(i, obj);
+              return lista;
+           }
+       }
+       return lista;
+    } 
 }
         
         

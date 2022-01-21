@@ -617,31 +617,9 @@ public class FrmVendas extends javax.swing.JFrame {
         Produtos objetoProd = dao.verificaEstoque(idProduto);
         int qtdEstoque = objetoProd.getQtd_estoque();
         
-        
-        for (int i = 0 ; i < (tabelaItens.getRowCount()) ; i++){
-
-            Produtos produtos = new Produtos();
-
-
-            produtos.setId(Integer.parseInt(tabelaItens.getValueAt(i,0).toString()));
-            produtos.setQtd_estoque(Integer.parseInt(tabelaItens.getValueAt(i,2).toString()));
-
-
-            listaProdutos.add(produtos);
-        }
-        
-            
-        for (int i = 0 ; i <(listaProdutos.size()) ; i++){
-            Produtos obj = new Produtos();
-            obj = listaProdutos.get(i);
-            if (obj.getId() ==  idProduto)
-            totalItensId += obj.getQtd_estoque();   
-        } 
-        
-        
-        if ((qntd <= qtdEstoque) && (qntd != 0) && ((totalItensId + qntd) <= qtdEstoque)){
+        if ((qntd <= qtdEstoque) && (qntd > 0) && ((totalItensId + qntd) <= qtdEstoque)){
              
-            qtd = Integer.parseInt(txtqtd.getText().replaceAll(",", "."));
+        qtd = Integer.parseInt(txtqtd.getText().replaceAll(",", "."));
         preco = Double.parseDouble(txtpreco.getText().replaceAll(",", "."));
         
         subtotal = qtd * preco;
@@ -661,7 +639,7 @@ public class FrmVendas extends javax.swing.JFrame {
             });
             
         } else{
-            txtqtd.setText(Integer.toString(qtdEstoque -(totalItensId) )); 
+            txtqtd.setText(""); 
             
             JOptionPane.showMessageDialog(null, "Quantidade insuficiente em estoque! Há "+
                     (qtdEstoque -(totalItensId) )+ " unidades em estoque!");
