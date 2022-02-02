@@ -414,6 +414,7 @@ public class FrmFuncionarios extends javax.swing.JFrame {
         txtend.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
         txtcomplemento.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtcomplemento.setName("complemento"); // NOI18N
 
         txtbairro.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
