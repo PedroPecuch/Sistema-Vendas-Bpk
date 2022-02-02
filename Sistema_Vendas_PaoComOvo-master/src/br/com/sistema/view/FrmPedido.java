@@ -75,11 +75,20 @@ public class FrmPedido extends javax.swing.JFrame {
         
         DefaultTableModel pedido = (DefaultTableModel) tbCarrinhoPedido.getModel();
        
+        Utilitarios util = new Utilitarios();
+        int check = util.presenteNaTabela(pedido, codigo);
+        
+        if (check == -1) {
             pedido.addRow(new Object[]{
                 codigo,
                 produto,
                 qtd
             });
+        } else {
+            int quant = Integer.parseInt(pedido.getValueAt(check, 2).toString());
+            quant += qtd;
+            pedido.setValueAt(quant, check, 2);
+        }
             
         } else {
             JOptionPane.showMessageDialog(null, "Informe uma quantidade.");
