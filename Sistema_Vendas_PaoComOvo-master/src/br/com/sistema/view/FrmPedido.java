@@ -4,6 +4,7 @@ package br.com.sistema.view;
 import br.com.sistema.dao.ProdutosDAO;
 import br.com.sistema.dao.VendasDAO;
 import br.com.sistema.model.Produtos;
+import br.com.sistema.model.Utilitarios;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfPCell;
