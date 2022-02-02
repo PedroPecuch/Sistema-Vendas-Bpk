@@ -42,7 +42,7 @@ public class FrmVendas extends javax.swing.JFrame {
     
     DefaultTableModel carrinho;
     
-     List<Produtos> listaProdutos = new ArrayList();
+    List<Produtos> listaProdutos = new ArrayList();
 
     public FrmVendas() {
         initComponents();
@@ -630,14 +630,22 @@ public class FrmVendas extends javax.swing.JFrame {
         //Adicionar o produto no carrinho        
         carrinho = (DefaultTableModel) tabelaItens.getModel();
         
-         carrinho.addRow(new Object[]{
-             Integer.parseInt(txtcodigo.getText()),
-             txtdescricao.getText(),
-             Integer.parseInt(txtqtd.getText()),
-             Double.parseDouble(txtpreco.getText()),
-             subtotal                 
-            });
-            
+        int check = util.presenteNaTabela(carrinho, Integer.parseInt(txtcodigo.getText()));
+        
+        if(check == -1) {
+            carrinho.addRow(new Object[]{
+                 Integer.parseInt(txtcodigo.getText()),
+                 txtdescricao.getText(),
+                 Integer.parseInt(txtqtd.getText()),
+                 Double.parseDouble(txtpreco.getText()),
+                 subtotal                 
+                });
+        } else {
+            int quant = Integer.parseInt(carrinho.getValueAt(check, 2).toString());
+            quant += Integer.parseInt(txtqtd.getText());
+            carrinho.setValueAt(quant, check, 2);
+        }
+        
         } else{
             txtqtd.setText(""); 
             
