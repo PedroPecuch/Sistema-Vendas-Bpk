@@ -398,6 +398,7 @@ public class FrmFuncionarios extends javax.swing.JFrame {
 
         txtcodigo.setEditable(false);
         txtcodigo.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtcodigo.setName("codigo"); // NOI18N
 
         txtnome.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtnome.addActionListener(new java.awt.event.ActionListener() {
