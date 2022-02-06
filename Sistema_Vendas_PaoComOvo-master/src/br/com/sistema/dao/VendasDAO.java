@@ -151,10 +151,9 @@ public class VendasDAO {
     
     public List<Integer> retornaVendaItemMensal(int id, LocalDate data) {
         List<Integer> lista = new ArrayList<>();
-        int totalMes = 0;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-yyyy");
         
-        for (int i = 0; i <= lista.size(); i++) {
+        for (int i = 0; i < 4; i++) {
             try {
                 String sql = "select sum(qtd) as total"
                         + " from tb_itensvendas join tb_vendas on tb_itensvendas.venda_id "

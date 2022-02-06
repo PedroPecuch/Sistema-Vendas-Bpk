@@ -69,26 +69,26 @@ public class FrmPedido extends javax.swing.JFrame {
     //adicionar item
     public void adicionar(){
         if (!txtQtd.getText().isEmpty()) {
-        int qtd = Integer.parseInt(txtQtd.getText());
-        int codigo = Integer.parseInt(tbProdutosPedido.getValueAt(tbProdutosPedido.getSelectedRow(), 0).toString());
-        String produto = tbProdutosPedido.getValueAt(tbProdutosPedido.getSelectedRow(), 1).toString();
-        
-        DefaultTableModel pedido = (DefaultTableModel) tbCarrinhoPedido.getModel();
-       
-        Utilitarios util = new Utilitarios();
-        int check = util.presenteNaTabela(pedido, codigo);
-        
-        if (check == -1) {
-            pedido.addRow(new Object[]{
-                codigo,
-                produto,
-                qtd
-            });
-        } else {
-            int quant = Integer.parseInt(pedido.getValueAt(check, 2).toString());
-            quant += qtd;
-            pedido.setValueAt(quant, check, 2);
-        }
+            int qtd = Integer.parseInt(txtQtd.getText());
+            int codigo = Integer.parseInt(tbProdutosPedido.getValueAt(tbProdutosPedido.getSelectedRow(), 0).toString());
+            String produto = tbProdutosPedido.getValueAt(tbProdutosPedido.getSelectedRow(), 1).toString();
+
+            DefaultTableModel pedido = (DefaultTableModel) tbCarrinhoPedido.getModel();
+
+            Utilitarios util = new Utilitarios();
+            int check = util.presenteNaTabela(pedido, codigo);
+
+            if (check == -1) {
+                pedido.addRow(new Object[]{
+                    codigo,
+                    produto,
+                    qtd
+                });
+            } else {
+                int quant = Integer.parseInt(pedido.getValueAt(check, 2).toString());
+                quant += qtd;
+                pedido.setValueAt(quant, check, 2);
+            }
             
         } else {
             JOptionPane.showMessageDialog(null, "Informe uma quantidade.");
@@ -384,7 +384,7 @@ public class FrmPedido extends javax.swing.JFrame {
         DefaultTableModel historico = (DefaultTableModel) tbHistorico.getModel();
         historico.setNumRows(0);
         
-        for (int i = 0; i <= lista.size(); i++) {
+        for (int i = 0; i < lista.size(); i++) {
             historico.addRow(new Object[]{
               data.minusMonths(i).getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault()),
               lista.get(i)
