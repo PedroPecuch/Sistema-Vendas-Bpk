@@ -643,7 +643,12 @@ public class FrmVendas extends javax.swing.JFrame {
         } else {
             int quant = Integer.parseInt(carrinho.getValueAt(check, 2).toString());
             quant += Integer.parseInt(txtqtd.getText());
+            if (quant <= qtdEstoque) {
             carrinho.setValueAt(quant, check, 2);
+            } else {
+                JOptionPane.showMessageDialog(null, "Quantidade insuficiente em estoque! Há "+
+                    (qtdEstoque -(totalItensId) )+ " unidades em estoque!");
+            }
         }
         
         } else{
